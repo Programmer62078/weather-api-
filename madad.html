@@ -12,12 +12,272 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
-    <link rel="stylesheet" href="./madad.css" />
+    <style>
+      /* Base Reset */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
+
+      body {
+        background: linear-gradient(to bottom, #6a11cb, #2575fc);
+        color: #ffffff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      .container {
+        text-align: center;
+        position: relative;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(15px);
+      }
+
+      .city-name {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        top: 30%;
+        transform: translateY(-50%);
+      }
+
+      .icon {
+        height: 35vh;
+      }
+
+      .min-max {
+        display: flex;
+        width: 100%;
+        justify-content: space-around;
+      }
+
+      .date {
+        font-size: large;
+        font-weight: bold;
+        color: #d1e8ff;
+      }
+
+      .wave {
+        position: absolute;
+        bottom: -10%;
+        width: 120%;
+        height: 20vh;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        opacity: 0.5;
+        animation: wave-animation 5s infinite linear;
+      }
+
+      .wave1 {
+        animation-delay: 0s;
+      }
+
+      .wave2 {
+        animation-delay: 2s;
+      }
+
+      .wave3 {
+        animation-delay: 4s;
+      }
+
+      #icon {
+        color: rgb(252, 252, 62);
+        margin: 2rem auto;
+        animation: sun 10s infinite alternate-reverse ease-in-out;
+      }
+
+      .temperature h1 {
+        font-size: 3.5rem;
+        color: #ffeb3b;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+      }
+
+      .min-max p {
+        display: inline-block;
+        font-size: 1rem;
+        color: #d1e8ff;
+        margin: 0 5px;
+      }
+
+      h1 {
+        display: flex;
+        width: 100%;
+        justify-content: space-around;
+        align-items: center;
+      }
+
+      .street {
+        color: greenyellow;
+        margin: 0 1rem;
+        animation: man 5s infinite alternate-reverse ease-in-out;
+      }
+
+      /* Animations */
+      @keyframes sun {
+        0% {
+          transform: scale(100%);
+        }
+
+        100% {
+          transform: scale(150%);
+        }
+      }
+
+      @keyframes man {
+        0% {
+          transform: translateX(-10%);
+        }
+
+        100% {
+          transform: translateX(10%);
+        }
+      }
+
+      @keyframes wave-animation {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(-100%);
+        }
+      }
+
+      /* Responsive Design */
+      @media (max-width: 991px) {
+        .container {
+          width: 100vw;
+          height: 90vh;
+          font-size: 2.5rem;
+        }
+
+        .date {
+          font-size: 2rem;
+        }
+
+        .temperature {
+          font-size: 1.5rem;
+        }
+
+        #icon {
+          margin-top: 5rem;
+        }
+      }
+
+      @media (max-width: 769px) {
+        body {
+          position: relative;
+        }
+
+        .container {
+          width: 100vw;
+          height: 100vh;
+          font-size: 1.5rem;
+        }
+
+        .date {
+          font-size: 1rem;
+        }
+
+        .temperature {
+          font-size: 0.5rem;
+        }
+
+        #icon {
+          margin: 7rem;
+        }
+
+        .street {
+          font-size: 2rem;
+        }
+
+        .wave1 {
+          position: absolute;
+          top: 55%;
+          left: -35%;
+          height: 50vh;
+          width: 50vh;
+        }
+
+        .wave2 {
+          position: absolute;
+          top: 55%;
+          height: 50vh;
+          width: 50vh;
+        }
+
+        .wave3 {
+          position: absolute;
+          top: 55%;
+          left: 50%;
+          height: 50vh;
+          width: 50vh;
+        }
+
+        .city-name {
+          display: flex;
+          flex-direction: column;
+          z-index: 999;
+          justify-items: baseline;
+          align-items: center;
+          position: absolute;
+          top: 56%;
+          left: 18%;
+        }
+
+        .temperature {
+          margin: 0rem;
+          padding: 0rem;
+        }
+
+        .min-max {
+          margin-top: -1.5em;
+        }
+      }
+    </style>
   </head>
 
   <body>
     <div class="container">
-      <div id="icon"><i class="fa-solid fa-cloud-rain fa-5x"></i></div>
+      <form id="cityForm" method="GET" action="/">
+        <input
+          type="text"
+          name="city"
+          placeholder="Enter city name"
+          required
+          style="
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            outline: none;
+            margin-bottom: 20px;
+          "
+        />
+        <button
+          type="submit"
+          style="
+            padding: 10px 20px;
+            border-radius: 5px;
+            background-color: #6a11cb;
+            color: white;
+            border: none;
+            cursor: pointer;
+          "
+        >
+          Search
+        </button>
+      </form>
+      <div id="icon">
+        <i class="fa-solid fa-cloud-rain fa-5x" style="color: #c78933"></i>
+      </div>
       <div class="wave wave1"></div>
       <div class="wave wave2"></div>
       <div class="wave wave3"></div>
@@ -36,6 +296,63 @@
         </div>
       </div>
     </div>
-    <script src="./madad.js"></script>
+    <script>
+      let date = document.getElementById("date");
+      let minmax = document.getElementsByClassName("min-max");
+      let icon = document.getElementById("icon");
+      let temperature = document.getElementById("temperature");
+
+      const tempstatus = "{%tempstatus%}";
+      // console.log(tempstatus);
+      if (tempstatus == "Sunny") {
+        icon.innerHTML = "<i class='fa-solid fa-sun fa-5x'></i>";
+      } else if (tempstatus == "Clouds") {
+        icon.innerHTML =
+          "<i class='fa-solid fa-cloud fa-5x'  style='color:#fff'></i>";
+      } else if (tempstatus == "Rain" || tempstatus == "Thunderstorm") {
+        icon.innerHTML =
+          "<i class='fa-solid fa-cloud-rain fa-5x'  style='color:#747d8c'></i>";
+      } else if (tempstatus == "Clouds") {
+        icon.innerHTML =
+          "<i class='fa-solid fa-cloud fa-5x'  style='color:#44c3de'></i>";
+      } else {
+        icon.innerHTML =
+          "<i class='fa-solid fa-cloud fa-5x'  style='color:#778beb'></i>";
+      }
+      const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+      const months = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+      ];
+
+      function getDate() {
+        const d = new Date();
+        return `${days[d.getDay()]} || ${d
+          .getDate()
+          .toString()
+          .padStart(2, "0")} ${months[d.getMonth()]} ${d.getFullYear()} |`;
+      }
+
+      function getTime() {
+        const now = new Date();
+        let hours = now.getHours() % 12 || 12; // Convert 0 or 24 to 12
+        const minutes = now.getMinutes().toString().padStart(2, "0");
+        return `${hours.toString().padStart(2, "0")} : ${minutes} ${
+          hours >= 12 ? "PM" : "AM"
+        }`;
+      }
+
+      date.innerHTML = `${getDate()}| ${getTime()}`;
+    </script>
   </body>
 </html>
