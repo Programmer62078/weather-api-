@@ -1,15 +1,23 @@
 {
-  "name": "whetherapp",
-  "type": "module",
+  "name": "madad-weather-app",
   "version": "1.0.0",
-  "description": "Aapi Whether app",
-  "main": "index.js",
+  "description": "A simple weather app using Node.js, Axios, and OpenWeatherMap API.",
+  "main": "madad.js",
   "scripts": {
+    "start": "node madad.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Sujit Mourya",
+  "keywords": [
+    "weather",
+    "nodejs",
+    "axios",
+    "openweathermap",
+    "dynamic"
+  ],
+  "author": "Md Salman Khan", 
   "license": "ISC",
   "dependencies": {
-    "node-fetch": "^3.3.2"
-  }
+    "axios": "^1.4.0"
+  },
+  "devDependencies": {}
 }
