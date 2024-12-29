@@ -1,55 +1,55 @@
-let date = document.getElementById("date");
-let minmax = document.getElementsByClassName("min-max");
-let icon = document.getElementById("icon");
-let temperature = document.getElementById("temperature");
+const http = require("http");
+const fs = require("fs");
+const url = require("url");
+const axios = require("axios");
 
-const tempstatus = "{%tempstatus%}";
-// console.log(tempstatus);
-if (tempstatus == "Sunny") {
-  icon.innerHTML = "<i class='fa-solid fa-sun fa-5x'></i>";
-} else if (tempstatus == "Clouds") {
-  icon.innerHTML =
-    "<i class='fa-solid fa-cloud fa-5x'  style='color:#fff'></i>";
-} else if (tempstatus == "Rain" || tempstatus == "Thunderstorm") {
-  icon.innerHTML =
-    "<i class='fa-solid fa-cloud-rain fa-5x'  style='color:#747d8c'></i>";
-} else if (tempstatus == "Clouds") {
-  icon.innerHTML =
-    "<i class='fa-solid fa-cloud fa-5x'  style='color:#44c3de'></i>";
-} else {
-  icon.innerHTML =
-    "<i class='fa-solid fa-cloud fa-5x'  style='color:#778beb'></i>";
-}
-const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-const months = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-];
+// Function to replace placeholders in the HTML template with actual weather data
+const replaceVal = (tempVal, orgVal) => {
+  let temperature = tempVal.replace("{%tempval%}", orgVal.main.temp);
+  temperature = temperature.replace("{%tempmin%}", orgVal.main.temp_min);
+  temperature = temperature.replace("{%tempmax%}", orgVal.main.temp_max);
+  temperature = temperature.replace("{%tempstatus%}", orgVal.weather[0].main);
+  temperature = temperature.replace("{%location%}", orgVal.name);
+  return temperature;
+};
 
-function getDate() {
-  const d = new Date();
-  return `${days[d.getDay()]} || ${d.getDate().toString().padStart(2, "0")} ${
-    months[d.getMonth()]
-  } ${d.getFullYear()} |`;
-}
+// Read the HTML template into memory
+const madadFile = fs.readFileSync("madad.html", "utf-8");
 
-function getTime() {
-  const now = new Date();
-  let hours = now.getHours() % 12 || 12; // Convert 0 or 24 to 12
-  const minutes = now.getMinutes().toString().padStart(2, "0");
-  return `${hours.toString().padStart(2, "0")} : ${minutes} ${
-    hours >= 12 ? "PM" : "AM"
-  }`;
-}
+const server = http.createServer((req, res) => {
+  const queryObject = url.parse(req.url, true).query;
 
-date.innerHTML = `${getDate()}| ${getTime()}`;
+  // Default to "Delhi" if no city is provided
+  const city = queryObject.city || "Delhi";
+
+  if (req.url.startsWith("/")) {
+    const api = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=12e347fc60d51cb2410bb1ff5cd89c46&units=imperial`;
+
+    console.log(`Fetching weather data for ${city}...`);
+
+    // Use Axios to fetch the weather data
+    axios
+      .get(api)
+      .then((response) => {
+        console.log("Weather data fetched successfully:", response.data);
+
+        const realdata = replaceVal(madadFile, response.data);
+        res.setHeader("Content-Type", "text/html");
+        res.write(realdata);
+        res.end();
+      })
+      .catch((error) => {
+        console.error("Error fetching weather data:", error.message);
+        res.statusCode = 500;
+        res.end(`<h1>Could not fetch weather data for "${city}"</h1>`);
+      });
+  } else {
+    res.statusCode = 404;
+    res.end("Page Not Found");
+  }
+});
+
+// Start the server on port 3000
+server.listen(3000, () => {
+  console.log("Server is running on port 3000");
+});
